@@ -60,11 +60,11 @@ AUTH_USERS = (auth_users + ADMINS) if auth_users else []
 # ============================================================
 # 🔹 CHANNELS AND GROUPS
 # ============================================================
-LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1003359134437'))
+LOG_CHANNEL = int(environ.get('LOG_CHANNEL', '-1003082828281'))
 # This Channel Is For When User Start Your Bot Then Bot Send That User Name And Id In This Log Channel, Same For Group Also.
 
 CHANNELS = [int(ch) if id_pattern.search(ch) else ch
-            for ch in environ.get('CHANNELS', '-1002658908912 -1002312303135 -1003370992067').split()]
+            for ch in environ.get('CHANNELS', '-1003082828281').split()]
 # This Is File Channel Where You Upload Your File Then Bot Automatically Save It In Database
 
 REQUEST_TO_JOIN_MODE = bool(environ.get('REQUEST_TO_JOIN_MODE', False))  # True → request to join FSUB
@@ -276,6 +276,7 @@ REACTIONS = [
 # Dont remove Credits
 # Developer Telegram @MyselfNeon
 # Update channel - @NeonFiles
+
 
 
 
