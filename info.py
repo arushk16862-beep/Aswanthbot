@@ -148,18 +148,18 @@ PAYMENT_TEXT = environ.get(
 # 🔹 CLONE SETTINGS
 # ============================================================
 # Clone Information : If Clone Mode Is True Then Bot Clone Other Bots.
-CLONE_MODE = bool(environ.get('CLONE_MODE', False)) # Set True or False
-CLONE_DATABASE_URI = environ.get('CLONE_DATABASE_URI', "") # Necessary If clone mode is true
+CLONE_MODE = bool(environ.get('CLONE_MODE', True)) # Set True or False
+CLONE_DATABASE_URI = environ.get('CLONE_DATABASE_URI', "mongodb+srv://fax008f_db_user:NSxUbHMzP4D79SqT@cluster0.nn9tq0c.mongodb.net/") # Necessary If clone mode is true
 PUBLIC_FILE_CHANNEL = environ.get('PUBLIC_FILE_CHANNEL', 'AnimeZerox') # Public Channel Username Without @ or without https://t.me/ and Bot Is Admin With Full Right.
 
 
 # ============================================================
 # 🔹 LINKS
 # ============================================================
-GRP_LNK = environ.get('GRP_LNK', 'https://t.me/Cinema_Lokam_Movies_Group')
-CHNL_LNK = environ.get('CHNL_LNK', 'https://t.me/Cinema_Updates_OTT')
-SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'Cinema_Clone_BOT_Support') # Support Chat Link Without https:// or @
-OWNER_LNK = environ.get('OWNER_LNK', 'https://t.me/Ascreator_10')
+GRP_LNK = environ.get('GRP_LNK', 'https://t.me/Cinemacomapanu')
+CHNL_LNK = environ.get('CHNL_LNK', 'https://t.me/faxfiles')
+SUPPORT_CHAT = environ.get('SUPPORT_CHAT', 'Cinemacompanu') # Support Chat Link Without https:// or @
+OWNER_LNK = environ.get('OWNER_LNK', 'https://t.me/laser_of_telegram')
 
 
 # ============================================================
@@ -212,7 +212,7 @@ TUTORIAL = environ.get('TUTORIAL', '')
 CACHE_TIME = int(environ.get('CACHE_TIME', 1800))
 MAX_B_TN = environ.get("MAX_B_TN", "10")
 PORT = environ.get("PORT", "8080")
-MSG_ALRT = environ.get('MSG_ALRT', 'Powered by @Aswanthcreator ❤️✨')
+MSG_ALRT = environ.get('MSG_ALRT', 'Powered by 𝗳𝗮𝘅❤️✨')
 
 CUSTOM_FILE_CAPTION = environ.get("CUSTOM_FILE_CAPTION", f"{script.CAPTION}")
 BATCH_FILE_CAPTION = environ.get("BATCH_FILE_CAPTION", CUSTOM_FILE_CAPTION)
@@ -276,6 +276,7 @@ REACTIONS = [
 # Dont remove Credits
 # Developer Telegram @MyselfNeon
 # Update channel - @NeonFiles
+
 
 
 
