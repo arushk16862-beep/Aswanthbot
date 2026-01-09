@@ -1,7 +1,7 @@
 class script(object):
     START_TXT = """<b><blockquote><i>‣ Hᴇʟʟᴏ {}</i></blockquote>
 <i><blockquote>I ᴀᴍ Lᴀᴛᴇsᴛ Aᴅᴠᴀɴᴄᴇᴅ Fɪʟᴛᴇʀ Bᴏᴛ.
-Cᴏᴅᴇᴅ & Dᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ <a href='https://t.me/Aswanthcreator'>A S Cʀᴇᴀᴛᴏʀ</a>.
+Cᴏᴅᴇᴅ & Dᴇᴠᴇʟᴏᴘᴇᴅ ʙʏ <a href='https://t.me/cinemacomapnu'>Cʀᴇᴀᴛᴏʀ</a>.
 I ᴄᴀɴ Fɪʟᴛᴇʀ & Sᴇɴᴅ Mᴏᴠɪᴇs / Aɴɪᴍᴇs Fɪʟᴇs Aᴅᴅᴇᴅ ᴛᴏ ᴍʏ Dᴀᴛᴀʙᴀsᴇ !!</blockquote></i></b>"""
 
     CLONE_START_TXT = """<b><blockquote><i>‣ Hᴇʟʟᴏ {}</i></blockquote>
@@ -13,7 +13,7 @@ You can create you own Clone Bot and use it in your own channel. It will Filter 
 Hᴇʀᴇ Aʀᴇ Mʏ Usᴇғᴜʟ Fᴇᴀᴛᴜʀᴇs</i> 🤗</b></blockquote>"""
 
     ABOUT_TXT = """<b><blockquote>‣ 📝 𝐌𝐘 𝐃𝐄𝐓𝐀𝐈𝐋𝐒</blockquote>    
-<i>• Mʏ Nᴀᴍᴇ : <a href=https://t.me/Aswanthcreator>{}</a>
+<i>• Mʏ Nᴀᴍᴇ : <a href=https://t.me/laser_of_telegram>{}</a>
 • Mʏ Bᴇsᴛ Fʀɪᴇɴᴅ : <a href='tg://settings'>Tʜɪs Sᴡᴇᴇᴛɪᴇ ❤️</a> 
 • Dᴇᴠᴇʟᴏᴘᴇʀ : <a href='https://t.me/Aswanthcreator'>@Asᴡᴀɴᴛʜᴄʀᴇᴀᴛᴏʀ</a> 
 • Lɪʙʀᴀʀʏ : <a href='https://docs.pyrogram.org/'>Pʏʀᴏɢʀᴀᴍ</a> 
