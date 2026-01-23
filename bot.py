@@ -1,41 +1,47 @@
-import sys, importlib, logging, logging.config, pytz, asyncio
+import sys
+import asyncio
+import importlib.util
+import logging
+import logging.config
+import pytz
 from pathlib import Path
+from datetime import date, datetime
 
-# ---------------- Logging ----------------
-logging.config.fileConfig('logging.conf')
+# ---------------- LOGGING ----------------
+logging.config.fileConfig("logging.conf")
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 logging.getLogger("cinemagoer").setLevel(logging.ERROR)
 
+# ---------------- IMPORTS ----------------
 from pyrogram import idle
-from database.users_chats_db import db
+from aiohttp import web
+import aiohttp
+
 from info import *
 from utils import temp
 from Script import script
-from datetime import date, datetime
-from aiohttp import web
+from database.users_chats_db import db
+
 from plugins import web_server
 from plugins.clone import restart_bots
 
 from Neon.bot import NeonBot
-from Neon.util.keepalive import ping_server
 from Neon.bot.clients import initialize_clients
+from Neon.util.keepalive import ping_server
 
-# ---------------- Keep Alive ----------------
-import aiohttp
+# ---------------- KEEP ALIVE ----------------
 async def keep_alive():
     async with aiohttp.ClientSession() as session:
         while True:
             try:
                 await session.get(KEEP_ALIVE_URL)
-                logging.info("Sent keep-alive request.")
+                logging.info("Keep-alive ping sent")
             except Exception as e:
-                logging.error("Keep-alive failed: %s", e)
+                logging.error(f"Keep-alive error: {e}")
             await asyncio.sleep(100)
-# -------------------------------------------------------
 
-
-# ---------------- Plugin Loader ----------------
+# ---------------- PLUGIN LOADER ----------------
 def get_all_plugin_files(root="plugins"):
     files = []
     for path in Path(root).rglob("*.py"):
@@ -43,51 +49,48 @@ def get_all_plugin_files(root="plugins"):
             files.append(path)
     return files
 
-files = get_all_plugin_files()
-# -------------------------------------------------------
-
-loop = asyncio.get_event_loop()
-
+PLUGIN_FILES = get_all_plugin_files()
 
 # ============================================================
 #                     BOT START FUNCTION
 # ============================================================
-async def start():
-    print("\nInitializing Your Bot...\n")
+async def start_bot():
+    print("\n🚀 Initializing Your Bot...\n")
 
-    # ⭐ CORRECT BOT START (FIXES YOUR RESTART MESSAGE ISSUE)
-    await NeonBot.start()
+    # ---- START BOT (ONLY ONCE) ----
+    try:
+        await NeonBot.start()
+    except Exception as e:
+        logging.error(f"Bot start failed: {e}")
+        raise e
 
-    # Load clients
     await initialize_clients()
 
-    # ------------------- Import Plugins -------------------
-    for plugin_path in files:
-        plugin_name = plugin_path.stem
-        import_path = ".".join(plugin_path.with_suffix("").parts)
+    # ---- LOAD PLUGINS ----
+    for plugin in PLUGIN_FILES:
+        try:
+            name = plugin.stem
+            spec = importlib.util.spec_from_file_location(name, plugin)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            sys.modules[name] = mod
+            print(f"✅ Loaded plugin: {name}")
+        except Exception as e:
+            logging.error(f"Plugin load failed {plugin}: {e}")
 
-        spec = importlib.util.spec_from_file_location(import_path, plugin_path)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-
-        sys.modules[import_path] = mod
-        print(f"✨ Neon Imported => {plugin_name}")
-    # -------------------------------------------------------
-
-    # Heroku keepalive
+    # ---- KEEP ALIVE ----
     if ON_HEROKU:
         asyncio.create_task(ping_server())
 
-    # User keep-alive
     if KEEP_ALIVE_URL:
         asyncio.create_task(keep_alive())
 
-    # Load banned list
+    # ---- LOAD BANS ----
     b_users, b_chats = await db.get_banned()
     temp.BANNED_USERS = b_users
     temp.BANNED_CHATS = b_chats
 
-    # Bot info
+    # ---- BOT INFO ----
     me = await NeonBot.get_me()
     temp.BOT = NeonBot
     temp.ME = me.id
@@ -96,56 +99,37 @@ async def start():
 
     logging.info(script.LOGO)
 
-    # Time
+    # ---- RESTART MESSAGE ----
     tz = pytz.timezone("Asia/Kolkata")
     today = date.today()
-    now = datetime.now(tz)
-    time = now.strftime("%I:%M:%S %p")
+    time = datetime.now(tz).strftime("%I:%M:%S %p")
 
-    # Restart message
     try:
         await NeonBot.send_message(
-            chat_id=LOG_CHANNEL,
-            text=script.RESTART_TXT.format(me.first_name, today, time),
+            LOG_CHANNEL,
+            script.RESTART_TXT.format(me.first_name, today, time),
         )
     except Exception as e:
-        print("Restart message failed:", e)
+        logging.warning(f"Restart message failed: {e}")
 
-    # Notify channels
-    for ch in CHANNELS:
-        try:
-            msg = await NeonBot.send_message(ch, "**Bot Restarted**")
-            await msg.delete()
-        except:
-            print("Bot needs admin rights in File Channel:", ch)
-
-    try:
-        msg = await NeonBot.send_message(AUTH_CHANNEL, "**Bot Restarted**")
-        await msg.delete()
-    except:
-        print("Bot needs admin rights in AUTH_CHANNEL")
-
-    # Clone bots restart
+    # ---- CLONE MODE ----
     if CLONE_MODE:
-        print("Restarting clone bots...")
+        print("♻ Restarting clone bots...")
         await restart_bots()
-        print("Clone bots restarted.")
 
-    # Web server
+    # ---- WEB SERVER ----
     app = web.AppRunner(await web_server())
     await app.setup()
     await web.TCPSite(app, "0.0.0.0", PORT).start()
 
+    print("✅ Bot Started Successfully!")
     await idle()
-
 
 # ============================================================
 #                          MAIN
 # ============================================================
 if __name__ == "__main__":
     try:
-        loop.run_until_complete(start())
+        asyncio.run(start_bot())
     except KeyboardInterrupt:
-        logging.info("Service Stopped Bye 👋")
-
-
+        print("👋 Bot stopped")
