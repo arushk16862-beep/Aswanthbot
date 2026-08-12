@@ -12,7 +12,6 @@ python-decouple
 python-dotenv
 
 # --- Networking & Requests ---
-aiohttp==3.9.5
 aiofiles==24.1.0
 async-timeout==4.0.3
 requests
@@ -55,7 +54,6 @@ NumPy
 wheel
 humanize
 psutil
-openai
 
 # --- Pyrogram Mods / Plugins ---
 pyromod
@@ -68,4 +66,6 @@ async-timeout==4.0.3
 
 
 
+aiohttp==3.9.5
+openai>=1.50.0
 
