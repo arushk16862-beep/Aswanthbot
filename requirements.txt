@@ -55,7 +55,7 @@ NumPy
 wheel
 humanize
 psutil
-openai
+openai>=1.30.0
 
 # --- Pyrogram Mods / Plugins ---
 pyromod
