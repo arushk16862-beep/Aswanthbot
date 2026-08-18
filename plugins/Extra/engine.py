@@ -1,20 +1,39 @@
-aiohttp==3.8.6
+import os
+import asyncio
+from openai import AsyncOpenAI
 
-import openai
+# Initialize the async OpenAI client using environment variables
+# Set OPENAI_API_KEY in your Render Environment Variables dashboard
+ai_client = AsyncOpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 async def ai(query):
-    openai.api_key = "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" #Your openai api key
-    response = openai.Completion.create(engine="text-davinci-002", prompt=query, max_tokens=100, n=1, stop=None, temperature=0.9, timeout=5)
-    return response.choices[0].text.strip()
-     
+    # Uses the modern gpt-3.5-turbo / gpt-4o-mini chat completion API asynchronously
+    response = await ai_client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful Telegram bot assistant."},
+            {"role": "user", "content": query}
+        ],
+        max_tokens=150,
+        temperature=0.7
+    )
+    return response.choices[0].message.content.strip()
+
 async def ask_ai(client, m, message):
     try:
-        question = message.text.split(" ", 1)[1]
-        # Generate response using OpenAI API
+        # Check if user provided a prompt
+        args = message.text.split(" ", 1)
+        if len(args) < 2:
+            return await m.edit("<b>Please provide a prompt!</b>\nExample: <code>/ai What is quantum physics?</code>")
+
+        question = args[1]
+        
+        # Generate async response
         response = await ai(question)
-        # Send response back to user
-        await m.edit(f"{response}")
+        
+        # Send response back
+        await m.edit(f"<b>Query:</b> {question}\n\n<b>Response:</b>\n{response}")
+        
     except Exception as e:
-        # Handle other errors
-        error_message = f"An error occurred: {e}"
+        error_message = f"An error occurred: {str(e)}"
         await m.edit(error_message)
