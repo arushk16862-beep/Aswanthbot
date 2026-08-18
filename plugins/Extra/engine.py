@@ -1,3 +1,5 @@
+aiohttp==3.8.6
+
 import openai
 
 async def ai(query):
